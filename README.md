@@ -1,54 +1,267 @@
-# CrewaiTripPlanning Crew
+# 🧳 Trip Planning System using CrewAI
 
-Welcome to the CrewaiTripPlanning Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+## 📌 Project Overview
 
-## Installation
+This project implements an **AI-powered Trip Planning System** using **CrewAI**, where multiple intelligent agents collaborate to generate a **complete travel plan** for a user-specified destination.
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+The system uses a **multi-agent architecture** backed by a **Large Language Model (LLM)** to perform:
 
-First, if you haven't already, install uv:
+* Destination research
+* Day-by-day itinerary planning
+* Budget estimation and booking suggestions
 
-```bash
-pip install uv
+Each agent handles a specialized responsibility, and together they generate a **comprehensive and personalized trip plan**.
+
+---
+
+## 🎯 Problem Statement
+
+Travel planning can be challenging due to:
+
+* Lack of information about destinations
+* Difficulty in creating efficient itineraries
+* Uncertainty around budget and bookings
+
+This project solves the problem by simulating a **team of travel experts** using AI agents that collaboratively plan a trip based on user input.
+
+---
+
+## 🧠 Solution Architecture (Multi-Agent Workflow)
+
+```
+Travel Research Agent
+        ↓
+Itinerary Planner Agent
+        ↓
+Budget & Booking Advisor Agent
+        ↓
+Final Trip Plan
 ```
 
-Next, navigate to your project directory and install the dependencies:
+---
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
+## 👥 Agents Description
+
+### 1️⃣ Travel Research Agent
+
+* Researches the destination provided by the user
+* Identifies major attractions, best season, transport, and culture
+* Produces a destination research summary
+
+---
+
+### 2️⃣ Itinerary Planner Agent
+
+* Creates a structured day-by-day itinerary
+* Optimizes sightseeing and travel flow
+* Builds upon the research agent’s output
+
+---
+
+### 3️⃣ Budget & Booking Advisor Agent
+
+* Estimates overall travel cost
+* Suggests accommodation, transport, and booking tips
+* Produces a budget-friendly travel recommendation
+
+---
+
+## 📂 Project Structure
+
 ```
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/crewai_trip_planning/config/agents.yaml` to define your agents
-- Modify `src/crewai_trip_planning/config/tasks.yaml` to define your tasks
-- Modify `src/crewai_trip_planning/crew.py` to add your own logic, tools and specific args
-- Modify `src/crewai_trip_planning/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
+crewai_trip_planning/
+│
+├── .venv/                          # Virtual environment
+│
+├── knowledge/                      # (Optional) RAG travel documents
+│
+├── src/
+│   └── crewai_trip_planning/
+│       ├── __init__.py
+│       ├── crew.py                 # Agent & task orchestration
+│       ├── main.py                 # Entry point (inputs & kickoff)
+│       │
+│       ├── config/
+│       │   ├── agents.yaml         # Agent definitions
+│       │   └── tasks.yaml          # Task definitions
+│       │
+│       └── tools/                  # (Optional) custom tools
+│
+├── tests/                          # (Optional) tests
+│
+├── .env                            # API keys (Groq / OpenAI / etc.)
+├── .gitignore
+├── pyproject.toml                  # Project dependencies
+├── README.md                       # Project documentation
+└── trip_report.md                  # Generated trip plan (optional)
 ```
 
-This command initializes the crewai_trip_planning Crew, assembling the agents and assigning them tasks as defined in your configuration.
+---
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+## 📄 Configuration Files
+
+### 🔹 agents.yaml
+
+Defines:
+
+* Agent roles
+* Goals
+* Background expertise
+
+Each agent represents a **real-world travel planning role**.
+
+---
+
+### 🔹 tasks.yaml
+
+Defines:
+
+* Task descriptions
+* Expected outputs
+* Agent-task mapping
+* Dynamic input binding using `{{ place }}`
+
+Example:
+
+```yaml
+description: >
+  Research the travel destination {{ place }} including attractions and travel tips.
+```
+
+---
+
+## 📝 User Input
+
+The user provides a **travel destination** at runtime.
+
+Example input:
+
+```python
+inputs = {
+  "place": "Goa"
+}
+```
+
+This value is dynamically injected into all tasks and guides agent reasoning.
+
+---
+
+## ⚙️ Technologies Used
+
+* **Python 3.11**
+* **CrewAI**
+* **LiteLLM**
+* **Groq LLM (LLaMA 3.1)**
+* **YAML (for configuration)**
+
+---
+
+## 🔐 Environment Variables (`.env`)
+
+```env
+MODEL=groq/llama-3.1-8b-instant
+GROQ_API_KEY=your_groq_api_key
+```
+
+> ⚠️ Never commit API keys to GitHub.
+
+---
+
+## ▶️ How to Run the Project
+
+### 1️⃣ Create Virtual Environment (using uv)
+
+```bash
+uv venv --python 3.11
+```
+
+### 2️⃣ Activate Virtual Environment (Windows)
+
+```bash
+.venv\Scripts\activate
+```
+
+### 3️⃣ Install Dependencies
+
+```bash
+uv pip install crewai crewai-tools
+```
+
+or
+
+```bash
+uv pip install -r requirements.txt
+```
+
+---
+
+### 4️⃣ Set Environment Variables
+
+Create a `.env` file and add your API keys.
+
+---
+
+### 5️⃣ Run the Crew
+
+```bash
+crewai run
+```
+
+---
+
+## ✅ Output
+
+The system generates a **complete trip plan**, including:
+
+* Destination research
+* Day-wise itinerary
+* Estimated travel budget
+* Booking and cost-saving tips
+
+---
+
+## 🧪 How to Verify LLM & Multi-Agent Execution
+
+* Change the destination → output changes
+* Each agent produces its own reasoning
+* Output is not hardcoded
+* Confirms real LLM-powered execution
+
+---
+
+## 🎓 Learning Outcomes
+
+* Understanding multi-agent AI systems
+* Practical usage of CrewAI
+* LLM-driven planning workflows
+* Prompt engineering with dynamic inputs
+* Real-world AI system design
+
+---
 
 ## Understanding Your Crew
 
-The crewai_trip_planning Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+The **Trip Planning Crew** consists of multiple AI agents, each with a unique role and goal. These agents collaborate through tasks defined in `config/tasks.yaml` and are configured in `config/agents.yaml`.
+
+Together, they simulate how human travel planners research destinations, organize itineraries, and manage budgets.
+
+---
 
 ## Support
 
-For support, questions, or feedback regarding the CrewaiTripPlanning Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+For support, questions, or feedback regarding CrewAI:
 
-Let's create wonders together with the power and simplicity of crewAI.
+* 📘 Documentation: [https://docs.crewai.com](https://docs.crewai.com)
+* 🧑‍💻 GitHub: [https://github.com/joaomdmoura/crewai](https://github.com/joaomdmoura/crewai)
+* 💬 Discord: [https://discord.com/invite/X4JWnZnxPb](https://discord.com/invite/X4JWnZnxPb)
+* 🤖 Chat with docs: [https://chatg.pt/DWjSBZn](https://chatg.pt/DWjSBZn)
+
+---
+
+## 🏁 Conclusion
+
+This project demonstrates how **LLM-powered multi-agent systems** can automate real-world planning tasks such as trip planning. The modular design allows easy extension to other domains like finance, healthcare, and customer support.
+
+---
+
+
