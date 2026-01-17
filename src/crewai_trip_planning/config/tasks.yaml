@@ -1,17 +1,34 @@
-research_task:
+travel_research_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
-  expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    Research the travel destination {place}.
+    Collect major attractions, best season, transport,
+    weather, safety tips, and cultural highlights.
 
-reporting_task:
-  description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A destination research report for {place}.
+
+  agent: travel_research_agent
+
+
+travel_planning_task:
+  description: >
+    Create a detailed day-by-day itinerary for {place}
+    for a duration of {trip_duration}.
+
+  expected_output: >
+    A structured {trip_duration} itinerary for {place}.
+
+  agent: travel_planner_agent
+
+
+budget_booking_task:
+  description: >
+    Estimate the overall travel budget for {place}
+    based on the itinerary.
+    Mention key cities or regions included in the trip.
+
+  expected_output: >
+    A budget breakdown for {place} mentioning cities,
+    costs, and booking tips.
+
+  agent: budget_booking_agent
